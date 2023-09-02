@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: any) => ({
   },
 }));
 
-export default function Register() {
+export default function SignUp() {
   const { register, handleSubmit, setError, formState: { errors } } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const classes = useStyles();
@@ -81,7 +81,7 @@ export default function Register() {
             disabled={isLoading}
             className={classes.button}
           >
-            Register
+            Sign Up
           </Button>
         </form>
       </Paper>

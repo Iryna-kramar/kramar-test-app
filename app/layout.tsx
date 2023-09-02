@@ -1,7 +1,8 @@
-"use client";  
+"use client";
 
 import "./globals.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { QueryProvider } from "../queryClient";
 
 export default function RootLayout({
   children,
@@ -17,7 +18,9 @@ export default function RootLayout({
       */}
       <head />
       <body>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <QueryProvider>{children}</QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
