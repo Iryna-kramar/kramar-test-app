@@ -2,8 +2,9 @@
 
 import { useParams } from 'next/navigation'
 import { useQuery } from 'react-query';
-import { Container, Typography, CircularProgress, List, ListItem, ListItemText } from '@mui/material';
+import { Container, Typography, CircularProgress, List } from '@mui/material';
 import supabase from '../../../supabase';
+import FeedItem from '../../../components/FeedItem';
 
 export default function AuthorFeed() {
   const { authorId } = useParams(); 
@@ -18,18 +19,16 @@ export default function AuthorFeed() {
 
   return (
     <Container>
-      <Typography variant="h4">Author Feed</Typography>
-      {isLoading ? (
-        <CircularProgress />
-      ) : (
-        <List>
-          {posts?.map((post) => (
-            <ListItem key={post.id}>
-              <ListItemText primary={post.content} />
-            </ListItem>
-          ))}
-        </List>
-      )}
-    </Container>
+    <Typography variant="h4">Author Feed</Typography>
+    {isLoading ? (
+      <CircularProgress />
+    ) : (
+      <List>
+        {posts?.map((post) => (
+          <FeedItem key={post.id} content={post.content} type="Author" />
+        ))}
+      </List>
+    )}
+  </Container>
   );
 }

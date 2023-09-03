@@ -33,7 +33,7 @@ export default function SignUp() {
         console.error(error);
       } else {
         console.log('User signed up successfully:', user);
-        router.push('/login');
+        router.push('/general-feed');
       }
     } catch (error) {
       console.error('Error signing up:');
