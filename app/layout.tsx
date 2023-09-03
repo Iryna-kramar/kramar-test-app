@@ -3,6 +3,7 @@
 import "./globals.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { QueryProvider } from "../queryClient";
+// import Navbar from './../components/Navbar'
 
 export default function RootLayout({
   children,
@@ -19,6 +20,7 @@ export default function RootLayout({
       <head />
       <body>
         <ThemeProvider theme={theme}>
+        {/* <Navbar /> */}
           <QueryProvider>{children}</QueryProvider>
         </ThemeProvider>
       </body>

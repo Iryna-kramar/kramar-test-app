@@ -1,91 +1,48 @@
 
 "use client";  
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { TextField, Button, Container, Typography } from '@mui/material';
 import supabase from '../../../supabase'; 
-import { Container, Typography, Paper, TextField, Button, Box } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme: any) => ({
-  container: {
-    marginTop: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(3),
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(2),
-  },
-  button: {
-    marginTop: theme.spacing(2),
-  },
-}));
+type FormData = {
+  email: string;
+  password: string;
+};
 
 export default function Login() {
-  const { register, handleSubmit, setError, formState: { errors } } = useForm();
-  const [isLoading, setIsLoading] = useState(false);
-  const classes = useStyles();
+  const { register, handleSubmit } = useForm<FormData>();
+  const router = useRouter();
 
-  const onSubmit = async (data: any) => {
-    setIsLoading(true);
-    const { email, password } = data;
 
+  const onSubmit = async (data: FormData) => {
     try {
-      const { user, error } = await supabase.auth.signIn({
-        email,
-        password,
+      const { user, error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
       });
-
       if (error) {
-        setError('email', { message: error.message });
-      } else {
-        console.log('User logged in:', user);
-
+        console.error(error);
+       } else {
+        console.log('User logged in successfully:', user);
+        router.push('/general-feed'); 
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error('Error logging in:');
     }
-
-    setIsLoading(false);
   };
 
   return (
-    <Container maxWidth="sm" className={classes.container}>
-      <Paper elevation={3} className={classes.paper}>
-        <Typography variant="h4" gutterBottom>
-          Log In
-        </Typography>
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-          <TextField
-            fullWidth
-            type="email"
-            label="Email"
-            {...register('email', { required: true })}
-            error={!!errors.email}
-            helperText={errors?.email?.message?.toString()} 
-          />
-          <TextField
-            fullWidth
-            type="password"
-            label="Password"
-            {...register('password', { required: true })}
-            error={!!errors.password}
-            helperText={errors?.password?.message?.toString()} 
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={isLoading}
-            className={classes.button}
-          >
-            Log In
-          </Button>
-        </form>
-      </Paper>
+    <Container>
+      <Typography variant="h4">Login</Typography>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextField {...register('email')} label="Email" fullWidth margin="normal" />
+        <TextField type="password" {...register('password')} label="Password" fullWidth margin="normal" />
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Login
+        </Button>
+      </form>
     </Container>
   );
 }
